@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web AR Scene</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+        }
+        #ar-scene {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AR Scene -->
+    <a-scene embedded arjs="sourceType: webcam;" id="ar-scene">
+        
+        <!-- Add a marker for AR tracking (you can use Hiro marker, or customize it) -->
+        <a-marker preset="hiro">
+            <!-- 3D model loading from Google Drive -->
+            <a-entity 
+                gltf-model="https://drive.google.com/uc?export=download&id=1zYJA9cWqXRp2j2HUrQkwOs6HhCiM_2FG" 
+                scale="1 1 1" 
+                position="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 10000;">
+            </a-entity>
+        </a-marker>
+
+        <!-- AR camera -->
+        <a-entity camera></a-entity>
+    </a-scene>
+
+</body>
+</html>
