@@ -14,46 +14,54 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Include AR.js -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/build/ar.js"></script>
+    <!-- Include GLTFLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/js/loaders/GLTFLoader.js"></script>
 
     <script>
-        // Set up the scene
+        // Initialize scene, camera, and renderer
         var scene = new THREE.Scene();
         var camera = new THREE.Camera();
         scene.add(camera);
 
-        // Set up the AR.js context
-        var arToolkitSource = new THREEx.ArToolkitSource({
-            sourceType : 'webcam'
-        });
-        arToolkitSource.init(function onReady() {
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Initialize AR.js context
+        var arToolkitSource = new THREEx.ArToolkitSource({ sourceType: 'webcam' });
+        arToolkitSource.init(() => {
             setTimeout(() => {
                 arToolkitContext.update();
             }, 1000);
         });
 
         var arToolkitContext = new THREEx.ArToolkitContext({
-            cameraParametersUrl : 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/examples/data/camera_para.dat',
-            detectionMode : 'mono'
+            cameraParametersUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/examples/data/camera_para.dat',
+            detectionMode: 'mono'
         });
-        arToolkitContext.init(function onCompleted() {
+        arToolkitContext.init(() => {
             camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
         });
 
         // Set up the marker
         var markerRoot = new THREE.Group();
         scene.add(markerRoot);
+
         var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-            type : 'pattern',
-            patternUrl : 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/examples/data/patt.hiro'
+            type: 'pattern',
+            patternUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/examples/data/patt.hiro'
         });
 
         // Load the 3D model
         var loader = new THREE.GLTFLoader();
-        loader.load('https://drive.google.com/uc?export=download&id=1EECUjL9qTHMCvpgTfpE_uIqahfoE4d0e', function (gltf) {
+        loader.load('https://drive.google.com/uc?export=download&id=1EECUjL9qTHMCvpgTfpE_uIqahfoE4d0e', (gltf) => {
             var model = gltf.scene;
             model.scale.set(2, 2, 2); // Adjust scale here
             model.rotation.set(0, Math.PI / 2, 0); // Adjust rotation here
             markerRoot.add(model);
+        }, undefined, (error) => {
+            console.error('An error happened:', error);
         });
 
         // Render loop
@@ -61,20 +69,16 @@
             requestAnimationFrame(animate);
             if (arToolkitSource.ready) {
                 arToolkitContext.update();
-                scene.children.forEach(child => {
-                    if (child instanceof THREE.Mesh) {
-                        child.visible = true;
-                    }
-                });
+                renderer.render(scene, camera);
             }
-            renderer.render(scene, camera);
         }
         animate();
 
-        // Set up the renderer
-        var renderer = new THREE.WebGLRenderer({antialias: true});
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            arToolkitContext.update();
+        });
     </script>
 </body>
 </html>
