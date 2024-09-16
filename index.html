@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google AR Services Scene</title>
+    <title>Web-based AR Scene</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <style>
+        body { margin: 0; }
+        #scene { width: 100vw; height: 100vh; }
+    </style>
 </head>
 <body>
-
-    <!-- Button to open AR using Scene Viewer -->
-    <a href="https://arvr.google.com/scene-viewer/1.0?file=https://drive.google.com/uc?export=download&id=1zYJA9cWqXRp2j2HUrQkwOs6HhCiM_2FG&mode=ar_only" 
-       rel="ar" 
-       style="text-decoration: none;">
-        <button style="padding: 10px 20px; font-size: 18px; cursor: pointer;">View in AR</button>
-    </a>
-
-</body>
-</html>
+    <a-scene embedded arjs>
+        <!-- Define AR marker -->
+        <a-marker preset="hiro">
+            <!-- Add 3D model -->
+            <a-entity 
+                gltf-model="url(https://example.com/path/to/your-model.glb)" 
+                scale
