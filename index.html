@@ -2,83 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web-based AR Scene with three.js</title>
-    <style>
-        body { margin: 0; }
-        canvas { width: 100vw; height: 100vh; display: block; }
-    </style>
+    <title>Quran Recitation Page</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Include three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Include AR.js -->
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/build/ar.js"></script>
-    <!-- Include GLTFLoader -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/js/loaders/GLTFLoader.js"></script>
-
-    <script>
-        // Initialize scene, camera, and renderer
-        var scene = new THREE.Scene();
-        var camera = new THREE.Camera();
-        scene.add(camera);
-
-        var renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Initialize AR.js context
-        var arToolkitSource = new THREEx.ArToolkitSource({ sourceType: 'webcam' });
-        arToolkitSource.init(() => {
-            setTimeout(() => {
-                arToolkitContext.update();
-            }, 1000);
-        });
-
-        var arToolkitContext = new THREEx.ArToolkitContext({
-            cameraParametersUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/examples/data/camera_para.dat',
-            detectionMode: 'mono'
-        });
-        arToolkitContext.init(() => {
-            camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
-        });
-
-        // Set up the marker
-        var markerRoot = new THREE.Group();
-        scene.add(markerRoot);
-
-        var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-            type: 'pattern',
-            patternUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/examples/data/patt.hiro'
-        });
-
-        // Load the 3D model
-        var loader = new THREE.GLTFLoader();
-        loader.load('https://drive.google.com/uc?export=download&id=1EECUjL9qTHMCvpgTfpE_uIqahfoE4d0e', (gltf) => {
-            var model = gltf.scene;
-            model.scale.set(2, 2, 2); // Adjust scale here
-            model.rotation.set(0, Math.PI / 2, 0); // Adjust rotation here
-            markerRoot.add(model);
-        }, undefined, (error) => {
-            console.error('An error happened:', error);
-        });
-
-        // Render loop
-        function animate() {
-            requestAnimationFrame(animate);
-            if (arToolkitSource.ready) {
-                arToolkitContext.update();
-                renderer.render(scene, camera);
-            }
-        }
-        animate();
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            arToolkitContext.update();
-        });
-    </script>
+    <div class="container">
+        <h1>Quran Recitation</h1>
+        <div class="verse-section">
+            <h2>Surah Al-Fatiha</h2>
+            <p class="arabic">بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</p>
+            <p class="translation">In the name of Allah, the Most Gracious, the Most Merciful.</p>
+            <audio controls>
+                <source src="https://example.com/audio/al-fatiha.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <div class="message">
+            <!-- Hidden love note message -->
+            <p>You are a blessing to my heart, always inspiring me to be better.</p>
+        </div>
+    </div>
 </body>
 </html>
