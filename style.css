@@ -1,0 +1,56 @@
+body {
+    background-color: #f3f3f3;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.verse-section {
+    margin: 1rem 0;
+}
+
+.arabic {
+    font-size: 1.5rem;
+    color: #005f73;
+}
+
+.translation {
+    color: #3a3a3a;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+audio {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.message {
+    display: none; /* Hidden by default */
+    margin-top: 1rem;
+    color: #38b000;
+}
+
+.verse-section:hover + .message {
+    display: block; /* Show the message when verse-section is hovered */
+}
